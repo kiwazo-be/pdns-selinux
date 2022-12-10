@@ -1,0 +1,23 @@
+
+module pdns-kiwazo 1.0;
+
+require {
+	type unreserved_port_t;
+	type pdns_t;
+	type var_lib_t;
+	type var_spool_t;
+	type fs_t;
+	class file { create getattr lock map open read write };
+	class dir { add_name write };
+	class filesystem getattr;
+	class udp_socket name_bind;
+	class tcp_socket name_connect;
+}
+
+#============= pdns_t ==============
+allow pdns_t fs_t:filesystem getattr;
+allow pdns_t unreserved_port_t:udp_socket name_bind;
+allow pdns_t var_lib_t:dir { add_name write };
+allow pdns_t var_lib_t:file { create getattr lock map open read write };
+allow pdns_t var_spool_t:file write;
+allow pdns_t unreserved_port_t:tcp_socket name_connect;
